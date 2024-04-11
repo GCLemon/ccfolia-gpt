@@ -28,14 +28,13 @@ import PrefPage from './pages/pref';
 
 // ドロワーのメニュー要素
 type DrawerMenuProps = {
-  select: boolean,
   text: string,
   icon: React.ReactNode,
   onClick: () => void,
 };
 const DrawerMenu = (props:DrawerMenuProps) => {
   return (
-    <ListItemButton selected={props.select} onClick={props.onClick} sx={{width:256}}>
+    <ListItemButton onClick={props.onClick} sx={{width:256}}>
       <ListItemIcon>{props.icon}</ListItemIcon>
       <ListItemText primary={props.text} sx={{flexGrow:1}}/>
     </ListItemButton>
@@ -88,9 +87,9 @@ const Main = () => {
         {/* ドロワーメニュー */}
         <Drawer role='presentation' open={drawerOpen} onClose={()=>setDrawerOpen(false)}>
           <List>
-            <DrawerMenu text='キャラクター一覧' icon={<PersonIcon/>} select={page==='list'} onClick={()=>changePage('list')}/>
-            <DrawerMenu text='キャラクター作成' icon={<LibraryAddIcon/>} select={page==='edit'} onClick={()=>changePage('edit')}/>
-            <DrawerMenu text='設定' icon={<SettingsIcon/>} select={page==='pref'} onClick={()=>changePage('pref')}/>
+            <DrawerMenu text='キャラクター一覧' icon={<PersonIcon/>} onClick={()=>changePage('list')}/>
+            <DrawerMenu text='キャラクター作成' icon={<LibraryAddIcon/>} onClick={()=>changePage('edit')}/>
+            <DrawerMenu text='設定' icon={<SettingsIcon/>} onClick={()=>changePage('pref')}/>
           </List>
         </Drawer>
 

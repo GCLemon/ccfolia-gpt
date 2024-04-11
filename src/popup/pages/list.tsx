@@ -5,8 +5,10 @@ import {
   ListItemText,
   Paper,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete'
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+
+import React from 'react';
 
 // キャラクター要素
 type CharacterItemProps = {
@@ -39,10 +41,12 @@ const CharacterItem = (props:CharacterItemProps) => {
 // キャラクター一覧画面
 const ListPage = () => {
   return (
-    <Paper elevation={6} sx={{m:2,backgroundColor:'white'}}>
-      <List>
-      </List>
-    </Paper>
+    <React.Fragment>
+      <Paper elevation={6} sx={{m:2,backgroundColor:'white'}}>
+        <List>
+        </List>
+      </Paper>
+    </React.Fragment>
   );
 };
 
