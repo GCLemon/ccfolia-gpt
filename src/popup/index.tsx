@@ -69,11 +69,12 @@ const Main = () => {
   return (
     <PageContextProvider value={{page,setPage}}>
       <IDContextProvider value={{id,setID}}>
+
         {/* ベースラインCSSを設定 */}
         <CssBaseline/>
 
         {/* アプリケーションバー */}
-        <AppBar component='nav' position='static' elevation={0}>
+        <AppBar component='nav' position='fixed' elevation={6}>
           <Toolbar>
             <IconButton size='large' edge='start' aria-label='menu' sx={{mr:2}} onClick={()=>setDrawerOpen(true)}>
               <MenuIcon/>
@@ -94,9 +95,11 @@ const Main = () => {
         </Drawer>
 
         {/* メインページを表示 */}
+        <Toolbar/>
         <Box component='main'>
           {showPage}
         </Box>
+
       </IDContextProvider>
     </PageContextProvider>
   );
