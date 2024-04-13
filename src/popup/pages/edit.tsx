@@ -1,4 +1,4 @@
-import { Autocomplete, Grid, IconButton, List, ListItem, Paper, TextField, Typography } from '@mui/material';
+import { Autocomplete, Button, Grid, IconButton, List, ListItem, Paper, TextField, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -80,6 +80,11 @@ const EditPage = (props:EditPageProps) => {
       setCharacter({...character,voices:newVoices});
     };
 
+    // キャラクターの保存
+    const saveCharacter = () => {
+      chrome.runtime.sendMessage<CRXRequest>({command:'updateCharacter',argument:character});
+    }
+
     // 描画処理
     return (
       <React.Fragment>
@@ -116,6 +121,11 @@ const EditPage = (props:EditPageProps) => {
               <IconButton sx={{ml:'auto'}} onClick={()=>appendVoices('')}><AddIcon/></IconButton>
             </ListItem>
           </List>
+        </Paper>
+
+        {/* 保存ボタン */}
+        <Paper elevation={6} sx={{m:2,p:3,backgroundColor:'white'}}>
+          <Button fullWidth color='inherit' sx={{border:1}} onClick={saveCharacter}>保存</Button>
         </Paper>
 
       </React.Fragment>

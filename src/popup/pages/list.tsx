@@ -34,6 +34,7 @@ const CharacterItem = (props:CharacterItemProps) => {
   const remove = () => {
     chrome.runtime.sendMessage<CRXRequest>({command:'deleteCharacter',argument:props.character});
     chrome.runtime.sendMessage<CRXRequest>({command:'getAllCharacters',argument:{}});
+    setAlertOpen(false);
   };
 
   // 基本情報を整理
