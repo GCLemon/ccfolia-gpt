@@ -7,8 +7,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { PageContextProvider } from './contexts/page';
 import { IDContextProvider } from './contexts/id';
+import { PageContextProvider } from './contexts/page';
+import { OnMessageContextProvider } from './contexts/on-message';
 
 import EditPage from './pages/edit';
 import ListPage from './pages/list';
@@ -34,8 +35,9 @@ const Main = () => {
 
   // 状態管理
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [page, setPage] = useState<'list'|'edit'|'pref'>('list');
   const [id, setID] = useState<string|null>();
+  const [page, setPage] = useState<'list'|'edit'|'pref'>('list');
+  const [onMessage, setOnMessage] = useState<(response:any)=>void>();
 
   // 表示するページ
   let showPage:React.ReactNode|undefined;
@@ -54,41 +56,43 @@ const Main = () => {
 
   // DOMの描画
   return (
-    <PageContextProvider value={{page,setPage}}>
+    <OnMessageContextProvider value={{onMessage,setOnMessage}}>
       <IDContextProvider value={{id,setID}}>
+        <PageContextProvider value={{page,setPage}}>
 
-        {/* ベースラインCSSを設定 */}
-        <CssBaseline/>
+          {/* ベースラインCSSを設定 */}
+          <CssBaseline/>
 
-        {/* アプリケーションバー */}
-        <AppBar component='nav' position='fixed' elevation={6}>
-          <Toolbar>
-            <IconButton size='large' edge='start' aria-label='menu' sx={{mr:2}} onClick={()=>setDrawerOpen(true)}>
-              <MenuIcon/>
-            </IconButton>
-            <Typography variant='h6' component='div' sx={{flexGrow:1}}>
-              CCFOLIA GPT
-            </Typography>
-          </Toolbar>
-        </AppBar>
+          {/* アプリケーションバー */}
+          <AppBar component='nav' position='fixed' elevation={6}>
+            <Toolbar>
+              <IconButton size='large' edge='start' aria-label='menu' sx={{mr:2}} onClick={()=>setDrawerOpen(true)}>
+                <MenuIcon/>
+              </IconButton>
+              <Typography variant='h6' component='div' sx={{flexGrow:1}}>
+                CCFOLIA GPT
+              </Typography>
+            </Toolbar>
+          </AppBar>
 
-        {/* ドロワーメニュー */}
-        <Drawer role='presentation' open={drawerOpen} onClose={()=>setDrawerOpen(false)}>
-          <List>
-            <DrawerMenu text='キャラクター一覧' icon={<PersonIcon/>} onClick={()=>changePage('list')}/>
-            <DrawerMenu text='キャラクター作成' icon={<LibraryAddIcon/>} onClick={()=>changePage('edit')}/>
-            <DrawerMenu text='設定' icon={<SettingsIcon/>} onClick={()=>changePage('pref')}/>
-          </List>
-        </Drawer>
+          {/* ドロワーメニュー */}
+          <Drawer role='presentation' open={drawerOpen} onClose={()=>setDrawerOpen(false)}>
+            <List>
+              <DrawerMenu text='キャラクター一覧' icon={<PersonIcon/>} onClick={()=>changePage('list')}/>
+              <DrawerMenu text='キャラクター作成' icon={<LibraryAddIcon/>} onClick={()=>changePage('edit')}/>
+              <DrawerMenu text='設定' icon={<SettingsIcon/>} onClick={()=>changePage('pref')}/>
+            </List>
+          </Drawer>
 
-        {/* メインページを表示 */}
-        <Toolbar/>
-        <Box component='main'>
-          {showPage}
-        </Box>
+          {/* メインページを表示 */}
+          <Toolbar/>
+          <Box component='main'>
+            {showPage}
+          </Box>
 
+        </PageContextProvider>
       </IDContextProvider>
-    </PageContextProvider>
+    </OnMessageContextProvider>
   );
 };
 

@@ -5,7 +5,6 @@ const characters:Character[] = [];
 
 // 全てのキャラクターを取得
 function getAllCharacters(tabID:number) {
-  console.log(characters)
   const response = {
     command:'getAllCharacters',
     data: characters,
@@ -35,8 +34,6 @@ function getCharacterByID(tabID:number, argument:object) {
 
 // キャラクターを作成
 function createCharacter(tabID:number) {
-
-  console.log(characters);
 
   // 20桁のIDを生成
   const generateID = () => {

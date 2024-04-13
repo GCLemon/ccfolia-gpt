@@ -2,12 +2,10 @@ import { Autocomplete, Grid, IconButton, List, ListItem, Paper, TextField, Typog
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
+import { onMessageContext } from '@/popup/contexts/on-message';
 import { isCRXResponse, isCharacter } from '@/@type-guards';
-
-// イベントリスナー
-let getOrCreateCharacter:((response:any)=>void)|undefined;
 
 // キャラクター編集画面
 type EditPageProps = {
@@ -15,22 +13,28 @@ type EditPageProps = {
 };
 const EditPage = (props:EditPageProps) => {
 
+  // コンテキストの取得
+  const {onMessage,setOnMessage} = useContext(onMessageContext);
+  if(!setOnMessage) { throw new Error('Context uninitialized.'); }
+
+  // 状態管理
   const [character,setCharacter] = useState<Character>();
 
   // 初回更新時に実行
   React.useEffect(() => {
 
     // 保存されているイベントリスナーがあるならば削除
-    if(getOrCreateCharacter) { chrome.runtime.onMessage.removeListener(getOrCreateCharacter); }
+    if(onMessage) { chrome.runtime.onMessage.removeListener(onMessage); }
 
     // イベントリスナーを作成→保存→登録
-    getOrCreateCharacter = response => {
+    const newOnMessage = (response:any) => {
       if(isCRXResponse(response) && (response.command === 'createCharacter' || response.command === 'getCharacterByID')) {
         if(!isCharacter(response.data)) { throw new Error('Invalid type of value.'); }
         setCharacter(response.data);
       }
     };
-    chrome.runtime.onMessage.addListener(getOrCreateCharacter);
+    setOnMessage(newOnMessage);
+    chrome.runtime.onMessage.addListener(newOnMessage);
 
     // メッセージを送る
     if(props.id) { chrome.runtime.sendMessage<CRXRequest>({command:'getCharacterByID',argument:{id:props.id}}); }
@@ -125,7 +129,6 @@ const EditPage = (props:EditPageProps) => {
       </React.Fragment>
     );
   }
-
 };
 
 export default EditPage;
