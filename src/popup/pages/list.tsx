@@ -37,7 +37,7 @@ const CharacterItem = (props:CharacterItemProps) => {
 };
 
 // イベントリスナー
-let getCharacters:(response:any)=>void|undefined;
+let getAllCharacters:((response:any)=>void)|undefined;
 
 // キャラクター一覧画面
 const ListPage = () => {
@@ -54,18 +54,17 @@ const ListPage = () => {
   useEffect(() => {
 
     // 保存されているイベントリスナーがあるならば削除
-    if(getCharacters) { chrome.runtime.onMessage.removeListener(getCharacters); }
+    if(getAllCharacters) { chrome.runtime.onMessage.removeListener(getAllCharacters); }
 
     // イベントリスナーを作成→保存→登録
-    getCharacters = response => {
-      if(isCRXResponse(response) && response.command === 'getCharacters') {
+    getAllCharacters = response => {
+      if(isCRXResponse(response) && response.command === 'getAllCharacters') {
         if(!Array.isArray(response.data)) { throw new Error('Data is not an array.'); }
         if(!response.data.every(isCharacter)) { throw new Error('Inconsistent type of values.'); }
         setCharacters(response.data);
-        console.log(response.data);
       }
     };
-    chrome.runtime.onMessage.addListener(getCharacters);
+    chrome.runtime.onMessage.addListener(getAllCharacters);
 
     // メッセージを送る
     chrome.runtime.sendMessage<CRXRequest>({command:'getCharacters',argument:{}});

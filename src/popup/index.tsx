@@ -32,8 +32,6 @@ const DrawerMenu = (props:DrawerMenuProps) => {
 // ページ全体の描画
 const Main = () => {
 
-  chrome.runtime.sendMessage('Hello world');
-
   // 状態管理
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [page, setPage] = useState<'list'|'edit'|'pref'>('list');
@@ -49,8 +47,8 @@ const Main = () => {
 
   // ページ遷移
   const changePage = (page:'list'|'edit'|'pref') => {
-    setPage(page);
     setID(null);
+    setPage(page);
     setDrawerOpen(false);
   };
 
