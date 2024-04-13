@@ -1,7 +1,9 @@
 import { isCRXRequest, isCharacter } from '@/@type-guards';
+import { characterPrompt } from './prompts';
 
 // キャラクター情報を保存
 const characters:Character[] = [];
+const prompts:CharacterPrompt[] = [];
 
 // 全てのキャラクターを取得
 function getAllCharacters(tabID:number) {
@@ -50,13 +52,24 @@ function createCharacter(tabID:number) {
     name: '',
     age: '',
     gender: '不明',
-    person: '',
+    firstPerson:'',
+    secondPerson:'',
+    personality: '',
     history: '',
+    expression: '',
+    principle: '',
     voices: [],
+  };
+
+  // ダミーのプロンプトを生成
+  const prompt:CharacterPrompt = {
+    id: character.id,
+    prompt: '',
   };
 
   // キャラクターを追加
   characters.push(character);
+  prompts.push(prompt);
 
   // ポップアップに返す
   const response:CRXResponse = {
@@ -69,16 +82,23 @@ function createCharacter(tabID:number) {
 // キャラクターを更新
 function updateCharacter(tabID:number, argument:object) {
   
-  // 引数にキャラクター情報が入っていた場合は、更新してポップアップに返す
+  // 引数にキャラクター情報が入っていた場合
   if(isCharacter(argument)) {
+
+    // キャラクター情報の更新
     const index = characters.findIndex(v => v.id === argument.id);
     if(index === -1) { throw new Error('Specified character not found.'); }
     characters[index] = argument;
+
+    // ポップアップに返す
     const response:CRXResponse = {
       command: 'updateCharacter',
       data: {},
     };
     chrome.tabs.sendMessage<CRXResponse>(tabID, response);
+
+    // キャラクタープロンプトを生成
+    characterPrompt(argument).then(prompt => prompts[index] = {id:argument.id, prompt:prompt});
   }
 
   // それ以外はエラー

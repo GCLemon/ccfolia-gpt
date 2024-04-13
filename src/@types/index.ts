@@ -12,9 +12,19 @@ type Character = {
   icon?: IconData,
   age: number|string,
   gender: '男性'|'女性'|'両性'|'中性'|'無性'|'不定'|'不明',
-  person: string,
+  firstPerson: string,
+  secondPerson: string,
+  personality: string,
   history: string,
+  expression: string,
+  principle: string,
   voices: string[],
+};
+
+// キャラクタープロンプト
+type CharacterPrompt = {
+  id: string,
+  prompt: string,
 };
 
 // CCFOLIA上でのメッセージ

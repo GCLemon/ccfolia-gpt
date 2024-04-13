@@ -22,8 +22,12 @@ export function isCharacter(value:any): value is Character {
     && (value.icon === undefined || isIconData(value.icon))
     && (typeof value.age === 'number' || typeof value.age === 'string')
     && (typeof value.gender === 'string' && ['男性','女性','両性','中性','無性','不定','不明'].includes(value.gender))
-    && typeof value.person ==='string'
-    && typeof value.history ==='string'
+    && typeof value.firstPerson === 'string'
+    && typeof value.secondPerson === 'string'
+    && typeof value.personality === 'string'
+    && typeof value.history === 'string'
+    && typeof value.expression === 'string'
+    && typeof value.principle === 'string'
     && Array.isArray(value.voices) && value.voices.every(v => typeof v === 'string');
 }
 

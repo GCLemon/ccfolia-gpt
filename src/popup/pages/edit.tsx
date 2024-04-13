@@ -59,11 +59,19 @@ const EditPage = (props:EditPageProps) => {
       if(isGender(value)) { setCharacter({...character,gender:value}) }
     }
 
+    // 一人称・二人称の変更
+    const changeFirstPerson = (value:string) => setCharacter({...character,firstPerson:value});
+    const changeSecondPerson = (value:string) => setCharacter({...character,secondPerson:value});
+
     // 性格の変更
-    const changePerson = (value:string) => setCharacter({...character,person:value});
+    const changePerson = (value:string) => setCharacter({...character,personality:value});
 
     // 経歴の変更
     const changeHistory = (value:string) => setCharacter({...character,history:value});
+
+    // 口調・行動指針の変更
+    const changeExpression = (value:string) => setCharacter({...character,expression:value});
+    const changePrinciple = (value:string) => setCharacter({...character,principle:value});
 
     // サンプルボイスの変更
     const appendVoices = (voice:string) => {
@@ -92,16 +100,31 @@ const EditPage = (props:EditPageProps) => {
         <Paper elevation={6} sx={{m:2,p:3,backgroundColor:'white'}}>
           <Typography variant='h6' marginBottom={1}>キャラクター情報</Typography>
           <Grid container spacing={2} paddingBottom={2}>
-            <Grid item xs={12}><TextField fullWidth variant='standard' label='名前' value={character.name} onChange={event=>changeName(event.target.value)}/></Grid>
+            <Grid item xs={12}>
+              <TextField fullWidth variant='standard' label='名前' value={character.name} onChange={event=>changeName(event.target.value)}/>
+            </Grid>
             <Grid item xs={6}>
               <TextField fullWidth variant='standard' label='年齢' value={character.age.toString()} onChange={event=>changeAge(event.target.value)}/>
             </Grid>
             <Grid item xs={6}>
               <Autocomplete options={genders} renderInput={params=><TextField {...params} fullWidth variant='standard' label='性別' onChange={event=>changeGender(event.target.value)}/>} value={character.gender}/>
             </Grid>
+            <Grid item xs={6}>
+              <TextField fullWidth variant='standard' label='一人称' value={character.firstPerson} onChange={event=>changeFirstPerson(event.target.value)}/>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField fullWidth variant='standard' label='二人称' value={character.secondPerson} onChange={event=>changeSecondPerson(event.target.value)}/>
+            </Grid>
           </Grid>
-          <TextField multiline fullWidth variant='outlined' label='性格' margin='normal' rows={5} value={character.person} onChange={event=>changePerson(event.target.value)}/>
+          <TextField multiline fullWidth variant='outlined' label='性格' margin='normal' rows={5} value={character.personality} onChange={event=>changePerson(event.target.value)}/>
           <TextField multiline fullWidth variant='outlined' label='過去' margin='normal' rows={5} value={character.history} onChange={event=>changeHistory(event.target.value)}/>
+        </Paper>
+
+        {/* 口調・行動指針 */}
+        <Paper elevation={6} sx={{m:2,p:3,backgroundColor:'white'}}>
+          <Typography variant='h6' marginBottom={1}>口調・行動指針</Typography>
+          <TextField multiline fullWidth variant='outlined' label='過去' margin='normal' rows={5} value={character.expression} onChange={event=>changeExpression(event.target.value)}/>
+          <TextField multiline fullWidth variant='outlined' label='過去' margin='normal' rows={5} value={character.principle} onChange={event=>changePrinciple(event.target.value)}/>
         </Paper>
 
         {/* サンプルボイス */}
@@ -120,6 +143,12 @@ const EditPage = (props:EditPageProps) => {
               <IconButton sx={{ml:'auto'}} onClick={()=>appendVoices('')}><AddIcon/></IconButton>
             </ListItem>
           </List>
+        </Paper>
+
+        {/* 経歴・その他 */}
+        <Paper elevation={6} sx={{m:2,p:3,backgroundColor:'white'}}>
+          <Typography variant='h6' marginBottom={1}>経歴・その他</Typography>
+          <TextField multiline fullWidth variant='outlined' label='経歴・その他' margin='normal' rows={5} value={character.history} onChange={event=>changeHistory(event.target.value)}/>
         </Paper>
 
         {/* 保存ボタン */}
