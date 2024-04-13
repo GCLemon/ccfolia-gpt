@@ -30,13 +30,26 @@ type CCMessage = {
   text: string,
 };
 
-// Chrome拡張で受け渡すメッセージ
-type CRXRequest = {
-  command: string;
-  argument: object;
+// サービスワーカーに渡すリクエスト
+type CRXRequestBase<T,U> = {
+  command: T,
+  argument: U,
 };
+type CRXRequest =
+  | CRXRequestBase<'getAllCharacters',{}>
+  | CRXRequestBase<'getCharacterByID',{id:string}>
+  | CRXRequestBase<'createCharacter',{}>
+  | CRXRequestBase<'updateCharacter',Character>
+  | CRXRequestBase<'deleteCharacter',{id:string}>;
 
-type CRXResponse = {
-  command: string;
-  data: object;
-}
+// サービスワーカーから受け取るレスポンス
+type CRXResponseBase<T,U> = {
+  command: T,
+  data: U,
+};
+type CRXResponse = 
+  | CRXResponseBase<'getAllCharacters',Character[]>
+  | CRXResponseBase<'getCharacterByID',Character>
+  | CRXResponseBase<'createCharacter',Character>
+  | CRXResponseBase<'updateCharacter',{}>
+  | CRXResponseBase<'deleteCharacter',{}>;

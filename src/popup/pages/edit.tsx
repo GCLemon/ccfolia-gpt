@@ -9,7 +9,7 @@ import { isCRXResponse, isCharacter } from '@/@type-guards';
 
 // キャラクター編集画面
 type EditPageProps = {
-  id?:string,
+  id:string|null,
 };
 const EditPage = (props:EditPageProps) => {
 

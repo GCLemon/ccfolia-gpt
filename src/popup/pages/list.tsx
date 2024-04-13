@@ -26,12 +26,14 @@ const CharacterItem = (props:CharacterItemProps) => {
 
   // キャラクターの編集画面に遷移する
   const edit = () => {
-    setPage('edit');
     setID(props.character.id);
+    setPage('edit');
   };
 
   // キャラクターを削除する
   const remove = () => {
+    chrome.runtime.sendMessage<CRXRequest>({command:'deleteCharacter',argument:props.character});
+    chrome.runtime.sendMessage<CRXRequest>({command:'getAllCharacters',argument:{}});
   };
 
   // 基本情報を整理
@@ -42,6 +44,8 @@ const CharacterItem = (props:CharacterItemProps) => {
   // 要素の描画
   return (
     <React.Fragment>
+
+      {/* リスト要素 */}
       <ListItem sx={{
         borderTop: props.index === 0 ? 1 : 0,
         borderBottom: 1,
@@ -51,6 +55,8 @@ const CharacterItem = (props:CharacterItemProps) => {
         <IconButton sx={{ml:2}} onClick={edit}><EditIcon/></IconButton>
         <IconButton sx={{ml:2}} onClick={()=>setAlertOpen(true)}><DeleteIcon/></IconButton>
       </ListItem>
+
+      {/* キャラクターを削除する際のアラート */}
       <Modal open={alertOpen} onClose={()=>setAlertOpen(false)}>
         <Paper elevation={6} sx={{position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:270, backgroundColor:'white'}}>
           <Box sx={{borderBottom:1,p:2,borderColor:'#F5F5F5'}}>
@@ -59,11 +65,12 @@ const CharacterItem = (props:CharacterItemProps) => {
             <Typography>キャラクターを削除しますか？</Typography>
           </Box>
           <Box sx={{display:'flex',justifyContent:'center'}}>
-            <Button sx={{m:1}} color='error'>削除</Button>
-            <Button sx={{m:1}}>キャンセル</Button>
+            <Button sx={{m:1}} color='error' onClick={remove}>削除</Button>
+            <Button sx={{m:1}} onClick={()=>setAlertOpen(false)}>キャンセル</Button>
           </Box>
         </Paper>
       </Modal>
+
     </React.Fragment>
   );
 };
@@ -89,7 +96,6 @@ const ListPage = () => {
       if(isCRXResponse(response) && response.command === 'getAllCharacters') {
         if(!Array.isArray(response.data)) { throw new Error('Data is not an array.'); }
         if(!response.data.every(isCharacter)) { throw new Error('Inconsistent type of values.'); }
-        console.log(response.data);
         setCharacters(response.data);
       }
     };

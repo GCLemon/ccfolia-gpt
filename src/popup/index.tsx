@@ -35,7 +35,7 @@ const Main = () => {
 
   // 状態管理
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [id, setID] = useState<string|null>();
+  const [id, setID] = useState<string|null>(null);
   const [page, setPage] = useState<'list'|'edit'|'pref'>('list');
   const [onMessage, setOnMessage] = useState<(response:any)=>void>();
 
@@ -43,7 +43,7 @@ const Main = () => {
   let showPage:React.ReactNode|undefined;
   switch(page) {
     case 'list': showPage = <ListPage/>; break;
-    case 'edit': showPage = <EditPage/>; break;
+    case 'edit': showPage = <EditPage id={id}/>; break;
     case 'pref': showPage = <PrefPage/>; break;
   }
 

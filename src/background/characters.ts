@@ -5,8 +5,8 @@ const characters:Character[] = [];
 
 // 全てのキャラクターを取得
 function getAllCharacters(tabID:number) {
-  const response = {
-    command:'getAllCharacters',
+  const response:CRXResponse = {
+    command: 'getAllCharacters',
     data: characters,
   };
   chrome.tabs.sendMessage<CRXResponse>(tabID, response);
@@ -19,8 +19,8 @@ function getCharacterByID(tabID:number, argument:object) {
   if('id' in argument && typeof argument.id === 'string') {
     const character = characters.find(v => v.id === argument.id);
     if(!character) { throw new Error('Specified character not found.'); }
-    const response = {
-      command:'getCharacterByID',
+    const response:CRXResponse = {
+      command: 'getCharacterByID',
       data: character,
     };
     chrome.tabs.sendMessage<CRXResponse>(tabID, response);
@@ -59,8 +59,8 @@ function createCharacter(tabID:number) {
   characters.push(character);
 
   // ポップアップに返す
-  const response = {
-    command:'createCharacter',
+  const response:CRXResponse = {
+    command: 'createCharacter',
     data: character,
   };
   chrome.tabs.sendMessage<CRXResponse>(tabID, response);
@@ -74,8 +74,8 @@ function updateCharacter(tabID:number, argument:object) {
     const index = characters.findIndex(v => v.id === argument.id);
     if(index === -1) { throw new Error('Specified character not found.'); }
     characters[index] = argument;
-    const response = {
-      command:'updateCharacter',
+    const response:CRXResponse = {
+      command: 'updateCharacter',
       data: {},
     };
     chrome.tabs.sendMessage<CRXResponse>(tabID, response);
@@ -95,8 +95,8 @@ function deleteCharacter(tabID:number, argument:object) {
     const index = characters.findIndex(v => v.id === argument.id);
     if(index === -1) { throw new Error('Specified character not found.'); }
     characters.splice(index, 1);
-    const response = {
-      command:'getCharacterByID',
+    const response:CRXResponse = {
+      command: 'deleteCharacter',
       data: {},
     };
     chrome.tabs.sendMessage<CRXResponse>(tabID, response);
