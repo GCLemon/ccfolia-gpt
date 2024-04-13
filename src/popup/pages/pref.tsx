@@ -1,9 +1,4 @@
-import {
-  Grid,
-  Paper,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Grid, Paper, TextField, Typography } from '@mui/material';
 
 import React from 'react';
 

@@ -1,3 +1,7 @@
+import './characters';
+import './messages';
+import './preference';
+
 // 拡張機能のアイコンをクリックしたときのイベント
 chrome.action.onClicked.addListener(_ => {
 

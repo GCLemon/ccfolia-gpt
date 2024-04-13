@@ -1,16 +1,4 @@
-import {
-  AppBar,
-  Box,
-  CssBaseline,
-  Drawer,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography
-} from '@mui/material';
+import { AppBar, Box, CssBaseline, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
@@ -44,10 +32,12 @@ const DrawerMenu = (props:DrawerMenuProps) => {
 // ページ全体の描画
 const Main = () => {
 
+  chrome.runtime.sendMessage('Hello world');
+
   // 状態管理
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [page, setPage] = useState<'list'|'edit'|'pref'>('list');
-  const [id, setID] = useState<string|undefined>();
+  const [id, setID] = useState<string|null>();
 
   // 表示するページ
   let showPage:React.ReactNode|undefined;
@@ -58,9 +48,9 @@ const Main = () => {
   }
 
   // ページ遷移
-  const changePage = (page:'list'|'edit'|'pref', id?:string) => {
+  const changePage = (page:'list'|'edit'|'pref') => {
     setPage(page);
-    setID(id);
+    setID(null);
     setDrawerOpen(false);
   };
 

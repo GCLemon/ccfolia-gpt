@@ -1,14 +1,12 @@
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Paper
-} from '@mui/material';
+import { IconButton, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
+import { pageContext } from '@/popup/contexts/page';
+import { idContext } from '@/popup/contexts/id';
+import { isCRXResponse, isCharacter } from '@/@type-guards';
 
 // キャラクター要素
 type CharacterItemProps = {
@@ -38,13 +36,51 @@ const CharacterItem = (props:CharacterItemProps) => {
   );
 };
 
+// イベントリスナー
+let getCharacters:(response:any)=>void|undefined;
+
 // キャラクター一覧画面
 const ListPage = () => {
+
+  // コンテキストの取得
+  const {setPage} = useContext(pageContext);
+  const {setID} = useContext(idContext);
+  if(!setPage || !setID) { throw new Error('Context uninitialized.'); }
+
+  // 状態管理
+  const [characters,setCharacters] = useState<Character[]>([]);
+
+  // 初回更新時に実行
+  useEffect(() => {
+
+    // 保存されているイベントリスナーがあるならば削除
+    if(getCharacters) { chrome.runtime.onMessage.removeListener(getCharacters); }
+
+    // イベントリスナーを作成→保存→登録
+    getCharacters = response => {
+      if(isCRXResponse(response) && response.command === 'getCharacters') {
+        if(!Array.isArray(response.data)) { throw new Error('Data is not an array.'); }
+        if(!response.data.every(isCharacter)) { throw new Error('Inconsistent type of values.'); }
+        setCharacters(response.data);
+        console.log(response.data);
+      }
+    };
+    chrome.runtime.onMessage.addListener(getCharacters);
+
+    // メッセージを送る
+    chrome.runtime.sendMessage<CRXRequest>({command:'getCharacters',argument:{}});
+  }, []);
+
+  // 表示したいリストを設定
+  const showList = characters.length > 0
+    ? <List>{characters.map((value,index) => <CharacterItem key={index} index={index} character={value}/>)}</List>
+    : <Typography padding={2}>※「キャラクター作成」から喋らせたいキャラクターを作りましょう！</Typography>;
+
+  // 描画処理
   return (
     <React.Fragment>
       <Paper elevation={6} sx={{m:2,backgroundColor:'white'}}>
-        <List>
-        </List>
+        {showList}
       </Paper>
     </React.Fragment>
   );

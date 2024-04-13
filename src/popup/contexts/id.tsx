@@ -1,8 +1,8 @@
 import { ReactNode, createContext } from 'react';
 
 type IDContext = {
-  id?: string,
-  setID?: (value:string) => void,
+  id?: string|null,
+  setID?: (value:string|null) => void,
 };
 
 export const idContext = createContext<IDContext>({});
