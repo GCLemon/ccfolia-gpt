@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, List, ListItem, ListItemText, Modal, Paper, Typography } from '@mui/material';
+import { Box, Button, IconButton, List, ListItem, ListItemText, Modal, Paper, Tooltip, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { idContext } from '@/popup/contexts/id';
 import { pageContext } from '@/popup/contexts/page';
 import { onMessageContext } from '@/popup/contexts/on-message';
-import { isCRXResponse, isCharacter } from '@/@type-guards';
+import { isCRXResponse } from '@/@type-guards';
 
 // キャラクター要素
 type CharacterItemProps = {
@@ -53,8 +53,16 @@ const CharacterItem = (props:CharacterItemProps) => {
         borderColor: '#F5F5F5',
       }}>
         <ListItemText primary={name} secondary={age + ' / ' + gender}/>
-        <IconButton sx={{ml:2}} onClick={edit}><EditIcon/></IconButton>
-        <IconButton sx={{ml:2}} onClick={()=>setAlertOpen(true)}><DeleteIcon/></IconButton>
+        <Tooltip title='編集' placement='top' arrow>
+          <IconButton sx={{ml:2}} onClick={edit}>
+            <EditIcon/>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title='削除' placement='top' arrow>
+          <IconButton sx={{ml:2}} onClick={()=>setAlertOpen(true)}>
+            <DeleteIcon/>
+          </IconButton>
+        </Tooltip>
       </ListItem>
 
       {/* キャラクターを削除する際のアラート */}
@@ -95,8 +103,6 @@ const ListPage = () => {
     // イベントリスナーを作成→保存→登録
     const newOnMessage = (response:any) => {
       if(isCRXResponse(response) && response.command === 'getAllCharacters') {
-        if(!Array.isArray(response.data)) { throw new Error('Data is not an array.'); }
-        if(!response.data.every(isCharacter)) { throw new Error('Inconsistent type of values.'); }
         setCharacters(response.data);
       }
     };

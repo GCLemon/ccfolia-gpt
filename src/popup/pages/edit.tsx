@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useContext, useState } from 'react';
 
 import { onMessageContext } from '@/popup/contexts/on-message';
-import { isCRXResponse, isCharacter } from '@/@type-guards';
+import { isCRXResponse } from '@/@type-guards';
 
 // キャラクター編集画面
 type EditPageProps = {
@@ -29,7 +29,6 @@ const EditPage = (props:EditPageProps) => {
     // イベントリスナーを作成→保存→登録
     const newOnMessage = (response:any) => {
       if(isCRXResponse(response) && (response.command === 'createCharacter' || response.command === 'getCharacterByID')) {
-        if(!isCharacter(response.data)) { throw new Error('Invalid type of value.'); }
         setCharacter(response.data);
       }
     };
@@ -125,7 +124,7 @@ const EditPage = (props:EditPageProps) => {
 
         {/* 保存ボタン */}
         <Paper elevation={6} sx={{m:2,p:3,backgroundColor:'white'}}>
-          <Button fullWidth color='inherit' sx={{border:1}} onClick={saveCharacter}>保存</Button>
+          <Button fullWidth sx={{border:1}} onClick={saveCharacter}>保存</Button>
         </Paper>
 
       </React.Fragment>

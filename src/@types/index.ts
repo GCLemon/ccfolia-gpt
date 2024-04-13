@@ -17,12 +17,6 @@ type Character = {
   voices: string[],
 };
 
-// 設定情報
-type Preference = {
-  apiKey?: string;
-  maxRepeat?: number;
-};
-
 // CCFOLIA上でのメッセージ
 type CCMessage = {
   id: string,
@@ -36,20 +30,28 @@ type CRXRequestBase<T,U> = {
   argument: U,
 };
 type CRXRequest =
+  // キャラクターの編集
   | CRXRequestBase<'getAllCharacters',{}>
   | CRXRequestBase<'getCharacterByID',{id:string}>
   | CRXRequestBase<'createCharacter',{}>
   | CRXRequestBase<'updateCharacter',Character>
-  | CRXRequestBase<'deleteCharacter',{id:string}>;
+  | CRXRequestBase<'deleteCharacter',{id:string}>
+  // 設定の編集
+  | CRXRequestBase<'getPreference',{}>
+  | CRXRequestBase<'setPreference',{apiKey:string|null,maxRepeat:number|null}>;
 
 // サービスワーカーから受け取るレスポンス
 type CRXResponseBase<T,U> = {
   command: T,
   data: U,
 };
-type CRXResponse = 
+type CRXResponse =
+// キャラクターの編集
   | CRXResponseBase<'getAllCharacters',Character[]>
   | CRXResponseBase<'getCharacterByID',Character>
   | CRXResponseBase<'createCharacter',Character>
   | CRXResponseBase<'updateCharacter',{}>
-  | CRXResponseBase<'deleteCharacter',{}>;
+  | CRXResponseBase<'deleteCharacter',{}>
+  // 設定の編集
+  | CRXResponseBase<'getPreference',{apiKey:string|null,maxRepeat:number|null}>
+  | CRXResponseBase<'setPreference',{}>;

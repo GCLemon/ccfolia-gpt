@@ -110,6 +110,7 @@ function deleteCharacter(tabID:number, argument:object) {
 
 // メッセージを受け取ったときのイベントリスナーを追加
 chrome.runtime.onMessage.addListener((message,sender) => {
+  console.log(message);
   if(sender.tab?.id && isCRXRequest(message)) {
     switch(message.command) {
       case 'getAllCharacters':
