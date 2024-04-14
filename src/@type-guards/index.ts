@@ -34,9 +34,8 @@ export function isCharacter(value:any): value is Character {
 // CCFOLIAのメッセージの型ガード
 export function isCCMessage(value:any): value is CCMessage {
   return isObject<CCMessage>(value)
-    && typeof value.id === 'string'
-    && typeof value.name === 'string'
-    && typeof value.text === 'string';
+    && typeof value.person === 'string'
+    && typeof value.content === 'string';
 }
 
 // Chrome拡張メッセージの型ガード

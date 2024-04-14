@@ -1,5 +1,5 @@
-import './characters';
-import './messages';
+import './character';
+import './message';
 import './preference';
 
 // 拡張機能のアイコンをクリックしたときのイベント

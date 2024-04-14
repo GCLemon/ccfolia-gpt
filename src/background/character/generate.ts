@@ -10,7 +10,7 @@ type GPTMessage = OpenAI.Chat.Completions.ChatCompletionMessageParam;
 const openai = new OpenAI({apiKey});
 
 // キャラクタープロンプトを生成する
-export async function characterPrompt(character:Character) {
+export default async function characterPrompt(character:Character) {
 
   // 箇条書きを生成する
   const itemize = async (name:string, item:string) => {
@@ -44,12 +44,13 @@ export async function characterPrompt(character:Character) {
   };
 
   // 制約条件
+  const personality = await itemize(character.personality, '性格');
   const constraint = dedent `# 制約条件
     - Chatbotの自身を示す一人称は${character.firstPerson}です。
     - Userを示す二人称は${character.secondPerson}です。
     - Chatbotの名前は${character.name}です。
     - ${character.name}は${character.age}歳の${character.gender}です。
-    ${await itemize(character.personality, '性格')}
+    ${personality.choices[0].message}
     - 一人称は「${character.firstPerson}」を使ってください。
     `;
 

@@ -29,9 +29,8 @@ type CharacterPrompt = {
 
 // CCFOLIA上でのメッセージ
 type CCMessage = {
-  id: string,
-  name: string,
-  text: string,
+  person: string,
+  content: string,
 };
 
 // サービスワーカーに渡すリクエスト
@@ -48,7 +47,9 @@ type CRXRequest =
   | CRXRequestBase<'deleteCharacter',{id:string}>
   // 設定の編集
   | CRXRequestBase<'getPreference',{}>
-  | CRXRequestBase<'setPreference',{apiKey:string|null,maxRepeat:number|null}>;
+  | CRXRequestBase<'setPreference',{apiKey:string|null,maxRepeat:number|null}>
+  // 台詞の生成
+  | CRXRequestBase<'generate',{roomID:string}&CCMessage>;
 
 // サービスワーカーから受け取るレスポンス
 type CRXResponseBase<T,U> = {
@@ -64,4 +65,6 @@ type CRXResponse =
   | CRXResponseBase<'deleteCharacter',{}>
   // 設定の編集
   | CRXResponseBase<'getPreference',{apiKey:string|null,maxRepeat:number|null}>
-  | CRXResponseBase<'setPreference',{}>;
+  | CRXResponseBase<'setPreference',{}>
+  // 台詞の生成
+  | CRXResponseBase<'generate',CCMessage>;
