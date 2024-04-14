@@ -4,7 +4,7 @@ let apiKey:string|null = null;
 let maxRepeat:number|null = null;
 
 // 設定を取得する
-export function getPreference(tabID:number) {
+function getPreference(tabID:number) {
   const response:CRXResponse = {
     command: 'getPreference',
     data: {apiKey,maxRepeat},
@@ -13,7 +13,7 @@ export function getPreference(tabID:number) {
 }
 
 // 設定を更新する
-export function setPreference(tabID:number, argument:{apiKey:string|null,maxRepeat:number|null}) {
+function setPreference(tabID:number, argument:{apiKey:string|null,maxRepeat:number|null}) {
 
   // 設定を更新
   apiKey = argument.apiKey;
@@ -31,14 +31,9 @@ export function setPreference(tabID:number, argument:{apiKey:string|null,maxRepe
 chrome.runtime.onMessage.addListener((message,sender) => {
   if(sender.tab?.id && isCRXRequest(message)) {
     switch(message.command) {
-      case 'getPreference':
-        getPreference(sender.tab.id);
-        break;
-      case 'setPreference':
-        setPreference(sender.tab.id, message.argument);
-        break;
-      default:
-        break;
+      case 'getPreference': getPreference(sender.tab.id); break;
+      case 'setPreference': setPreference(sender.tab.id, message.argument); break;
+      default: break;
     }
   }
 });

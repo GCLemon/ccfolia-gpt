@@ -1,6 +1,7 @@
-import { Autocomplete, Button, Grid, IconButton, List, ListItem, Paper, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Grid, IconButton, List, ListItem, Paper, TextField, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 import React, { useContext, useState } from 'react';
 
@@ -99,32 +100,43 @@ const EditPage = (props:EditPageProps) => {
         {/* キャラクター情報 */}
         <Paper elevation={6} sx={{m:2,p:3,backgroundColor:'white'}}>
           <Typography variant='h6' marginBottom={1}>キャラクター情報</Typography>
-          <Grid container spacing={2} paddingBottom={2}>
-            <Grid item xs={12}>
-              <TextField fullWidth variant='standard' label='名前' value={character.name} onChange={event=>changeName(event.target.value)}/>
+          <Grid container spacing={2} marginBottom={2}>
+            <Grid item xs={3.5}>
+              <Box sx={{display:'flex',flexDirection:'column'}}>
+                <img src='./kkrn_icon_user_1.png' style={{width:'100%'}}/>
+                <Box m='auto'>
+                  <Button variant='outlined' startIcon={<EditIcon/>}>
+                    画像の設定
+                  </Button>
+                </Box>
+              </Box>
             </Grid>
-            <Grid item xs={6}>
-              <TextField fullWidth variant='standard' label='年齢' value={character.age.toString()} onChange={event=>changeAge(event.target.value)}/>
-            </Grid>
-            <Grid item xs={6}>
-              <Autocomplete options={genders} renderInput={params=><TextField {...params} fullWidth variant='standard' label='性別' onChange={event=>changeGender(event.target.value)}/>} value={character.gender}/>
-            </Grid>
-            <Grid item xs={6}>
-              <TextField fullWidth variant='standard' label='一人称' value={character.firstPerson} onChange={event=>changeFirstPerson(event.target.value)}/>
-            </Grid>
-            <Grid item xs={6}>
-              <TextField fullWidth variant='standard' label='二人称' value={character.secondPerson} onChange={event=>changeSecondPerson(event.target.value)}/>
+            <Grid item container xs={8.5} spacing={2}>
+              <Grid item xs={12}>
+                <TextField fullWidth variant='standard' label='名前' value={character.name} onChange={event=>changeName(event.target.value)}/>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField fullWidth variant='standard' label='年齢' value={character.age.toString()} onChange={event=>changeAge(event.target.value)}/>
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete options={genders} renderInput={params=><TextField {...params} fullWidth variant='standard' label='性別' onChange={event=>changeGender(event.target.value)}/>} value={character.gender}/>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField fullWidth variant='standard' label='一人称' value={character.firstPerson} onChange={event=>changeFirstPerson(event.target.value)}/>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField fullWidth variant='standard' label='二人称' value={character.secondPerson} onChange={event=>changeSecondPerson(event.target.value)}/>
+              </Grid>
             </Grid>
           </Grid>
           <TextField multiline fullWidth variant='outlined' label='性格' margin='normal' rows={5} value={character.personality} onChange={event=>changePerson(event.target.value)}/>
-          <TextField multiline fullWidth variant='outlined' label='過去' margin='normal' rows={5} value={character.history} onChange={event=>changeHistory(event.target.value)}/>
         </Paper>
 
         {/* 口調・行動指針 */}
         <Paper elevation={6} sx={{m:2,p:3,backgroundColor:'white'}}>
           <Typography variant='h6' marginBottom={1}>口調・行動指針</Typography>
-          <TextField multiline fullWidth variant='outlined' label='過去' margin='normal' rows={5} value={character.expression} onChange={event=>changeExpression(event.target.value)}/>
-          <TextField multiline fullWidth variant='outlined' label='過去' margin='normal' rows={5} value={character.principle} onChange={event=>changePrinciple(event.target.value)}/>
+          <TextField multiline fullWidth variant='outlined' label='口調' margin='normal' rows={5} value={character.expression} onChange={event=>changeExpression(event.target.value)}/>
+          <TextField multiline fullWidth variant='outlined' label='行動指針' margin='normal' rows={5} value={character.principle} onChange={event=>changePrinciple(event.target.value)}/>
         </Paper>
 
         {/* サンプルボイス */}
@@ -153,7 +165,7 @@ const EditPage = (props:EditPageProps) => {
 
         {/* 保存ボタン */}
         <Paper elevation={6} sx={{m:2,p:3,backgroundColor:'white'}}>
-          <Button fullWidth sx={{border:1}} onClick={saveCharacter}>保存</Button>
+          <Button fullWidth variant='outlined' onClick={saveCharacter}>保存</Button>
         </Paper>
 
       </React.Fragment>

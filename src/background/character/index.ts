@@ -118,23 +118,12 @@ function deleteCharacter(tabID:number, argument:{id:string}) {
 chrome.runtime.onMessage.addListener((message,sender) => {
   if(sender.tab?.id && isCRXRequest(message)) {
     switch(message.command) {
-      case 'getAllCharacters':
-        getAllCharacters(sender.tab.id);
-        break;
-      case 'getCharacterByID':
-        getCharacterByID(sender.tab.id, message.argument);
-        break;
-      case 'createCharacter':
-        createCharacter(sender.tab.id);
-        break;
-      case 'updateCharacter':
-        updateCharacter(sender.tab.id, message.argument);
-        break;
-      case 'deleteCharacter':
-        deleteCharacter(sender.tab.id, message.argument);
-        break;
-      default:
-        break;
+      case 'getAllCharacters': getAllCharacters(sender.tab.id); break;
+      case 'getCharacterByID': getCharacterByID(sender.tab.id, message.argument); break;
+      case 'createCharacter': createCharacter(sender.tab.id); break;
+      case 'updateCharacter': updateCharacter(sender.tab.id, message.argument); break;
+      case 'deleteCharacter': deleteCharacter(sender.tab.id, message.argument); break;
+      default: break;
     }
   }
 });

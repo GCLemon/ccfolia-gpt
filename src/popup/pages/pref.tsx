@@ -66,7 +66,7 @@ const PrefPage = () => {
             <TextField fullWidth type='number' variant='standard' label='受け答えの最大回数' value={maxRepeat ? maxRepeat.toString() : ''} onChange={event=>changeMaxRepeat(event.target.value)}/>
           </Grid>
         </Grid>
-        <Button fullWidth sx={{border:1}} onClick={savePreference}>保存</Button>
+        <Button fullWidth variant='outlined' onClick={savePreference}>保存</Button>
       </Paper>
     </React.Fragment>
   );

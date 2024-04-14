@@ -38,7 +38,6 @@ export default async function characterSpeech(messages:CCMessage[], person:strin
     max_tokens: 1024,
   });
 
-  // 受け取ったメッセージを
+  // 受け取ったメッセージを返す
   return response.choices[0].message.content ?? '';
-
 }

@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, List, ListItem, ListItemText, Modal, Paper, Tooltip, Typography } from '@mui/material';
+import { Avatar, Box, Button, Checkbox, IconButton, List, ListItem, ListItemText, Modal, Paper, Tooltip, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -47,11 +47,9 @@ const CharacterItem = (props:CharacterItemProps) => {
     <React.Fragment>
 
       {/* リスト要素 */}
-      <ListItem sx={{
-        borderTop: props.index === 0 ? 1 : 0,
-        borderBottom: 1,
-        borderColor: '#F5F5F5',
-      }}>
+      <ListItem sx={{borderTop:props.index===0?1:0,borderBottom:1,borderColor:'#F5F5F5'}}>
+        <Checkbox defaultChecked/>
+        <Avatar src='./kkrn_icon_user_1.png' sx={{width:48,height:48,mr:1}}/>
         <ListItemText primary={name} secondary={age + ' / ' + gender}/>
         <Tooltip title='編集' placement='top' arrow>
           <IconButton sx={{ml:2}} onClick={edit}>

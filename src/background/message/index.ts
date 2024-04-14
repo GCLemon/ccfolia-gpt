@@ -7,7 +7,7 @@ import characterSpeech from './generate';
 const messages:{[key:string]:CCMessage[]} = {};
 
 // 会話を生成する
-export function generate(tabID:number, message:{roomID:string}&CCMessage) {
+function generate(tabID:number, message:{roomID:string}&CCMessage) {
 
   // メッセージ情報を取得
   const {roomID,person,content} = message;
@@ -38,11 +38,8 @@ export function generate(tabID:number, message:{roomID:string}&CCMessage) {
 chrome.runtime.onMessage.addListener((message,sender) => {
   if(sender.tab?.id && isCRXRequest(message)) {
     switch(message.command) {
-      case 'generate':
-        generate(sender.tab.id, message.argument);
-        break;
-      default:
-        break;
+      case 'generate': generate(sender.tab.id, message.argument); break;
+      default: break;
     }
   }
 });
