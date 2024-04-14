@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import { onMessageContext } from '@/popup/contexts/on-message';
 import { isCRXResponse } from '@/@type-guards';
@@ -20,6 +20,9 @@ const EditPage = (props:EditPageProps) => {
 
   // 状態管理
   const [character,setCharacter] = useState<Character>();
+
+  // アップロードに対する参照
+  const uploadRef = useRef<HTMLInputElement>(null);
 
   // 初回更新時に実行
   React.useEffect(() => {
@@ -43,6 +46,28 @@ const EditPage = (props:EditPageProps) => {
 
   // キャラクターが取得できた場合の処理
   if(character) {
+
+    // 画像を探すダイアログを開く
+    const findImage = () => {
+      if(uploadRef.current) {
+        uploadRef.current.click();
+      }
+    }
+
+    // 画像のアップロード
+    const uploadImage = (value:FileList|null) => {
+      if(value) {
+        const reader = new FileReader();
+        reader.readAsDataURL(value[0]);
+        reader.onload = () => {
+          if(reader.result) {
+            const blob = new Blob([reader.result], {type:value[0].type});
+            console.log(blob.size);
+            console.log(blob.type);
+          }
+        };
+      }
+    };
 
     // 名前の変更
     const changeName = (value:string) => setCharacter({...character,name:value});
@@ -105,7 +130,8 @@ const EditPage = (props:EditPageProps) => {
               <Box sx={{display:'flex',flexDirection:'column'}}>
                 <img src='./kkrn_icon_user_1.png' style={{width:'100%'}}/>
                 <Box m='auto'>
-                  <Button variant='outlined' startIcon={<EditIcon/>}>
+                  <input ref={uploadRef} type='file' accept='image/*,.png,.jpg,.jpeg' style={{display:'none'}} onChange={event=>uploadImage(event.target.files)}/>
+                  <Button variant='outlined' startIcon={<EditIcon/>} onClick={findImage}>
                     画像の設定
                   </Button>
                 </Box>
