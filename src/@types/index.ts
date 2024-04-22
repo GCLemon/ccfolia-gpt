@@ -1,15 +1,7 @@
-// アイコン情報
-type IconData = {
-  type: string,
-  name: string,
-  uri: string,
-};
-
 // キャラクター情報
 type Character = {
   id: string,
   name: string,
-  icon?: IconData,
   age: number|string,
   gender: '男性'|'女性'|'両性'|'中性'|'無性'|'不定'|'不明',
   firstPerson: string,

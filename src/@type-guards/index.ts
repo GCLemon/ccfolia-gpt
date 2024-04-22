@@ -6,20 +6,11 @@ export default function isObject<T extends object>(value:any): value is WouldBe<
 
 // キャラクターの型ガード
 export function isCharacter(value:any): value is Character {
-
-  // アイコン情報を判定
-  function isIconData(value:any): value is IconData {
-    return isObject<IconData>(value)
-      && typeof value.type === 'string'
-      && typeof value.name === 'string'
-      && typeof value.uri ==='string';
-  }
   
   // キャラクターを判定
   return isObject<Character>(value)
     && typeof value.id === 'string'
     && typeof value.name === 'string'
-    && (value.icon === undefined || isIconData(value.icon))
     && (typeof value.age === 'number' || typeof value.age === 'string')
     && (typeof value.gender === 'string' && ['男性','女性','両性','中性','無性','不定','不明'].includes(value.gender))
     && typeof value.firstPerson === 'string'
